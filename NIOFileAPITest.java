@@ -21,8 +21,11 @@ class NIOFileAPITest {
 
 		Path playPath = Paths.get(HOME + "/" + pLAY_WITH_NIOString);
 		if (Files.exists(playPath))
-			Files.delete(playPath);
+			FileUtils.deleteFiles(playPath.toFile());
 		assertTrue(Files.notExists(playPath));
+		
+		Files.createDirectory(playPath);
+		assertTrue(Files.exists(playPath));
 
 		IntStream.range(1, 10).forEach(cntr -> {
 			Path tempFile = Paths.get(playPath + "/temp" + cntr);
@@ -32,7 +35,7 @@ class NIOFileAPITest {
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 			}
-			assertFalse(Files.exists(tempFile));
+			assertTrue(Files.exists(tempFile));
 		});
 
 		Files.list(playPath).filter(Files::isRegularFile).forEach(System.out::println);
@@ -40,5 +43,12 @@ class NIOFileAPITest {
 		Files.newDirectoryStream(playPath, path -> path.toFile().isFile() && path.toString().startsWith("temp"))
 				.forEach(System.out::println);
 
+	}
+	
+	@Test
+	public void givenADirectoryWatchedListsAllActivities() throws IOException{
+		Path dir = Paths.get(HOME+"/"+pLAY_WITH_NIOString);
+		Files.list(dir).filter(Files :: isRegularFile).forEach(System.out :: println);
+		new Java8WatchServiceExample(dir).processEvents();
 	}
 }
