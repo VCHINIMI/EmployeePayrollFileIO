@@ -21,7 +21,10 @@ public class EmployeePayrollService {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Welcome to Employee PayRoll problem");
+		ArrayList<EmployeePayrollData> employeePayrollList = new ArrayList<>();
+		EmployeePayrollService employeePayrollService = new EmployeePayrollService(employeePayrollList);
+		employeePayrollService.readEmployeePayrollData();
+		employeePayrollService.writeEmployeePayrollData();
 	}
 
 	public void readEmployeePayrollData() {
