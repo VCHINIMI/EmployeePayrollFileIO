@@ -1,10 +1,17 @@
 package myPackage.vinay.fileIO;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import javax.sound.sampled.Line;
 
 public class EmployeePayrollFileIOService {
 	public static String pAYROLL_FILE_NAME = "payroll-file.txt";
@@ -25,13 +32,13 @@ public class EmployeePayrollFileIOService {
 		}
 	}
 	
-	public void printData() {
+	public void printData() throws Exception {
 		try {
 			Files.lines(new File(pAYROLL_FILE_NAME).toPath()).forEach(System.out::println);
 		}
 		catch (IOException e) {
 			System.out.println(e.getMessage());
-		}
+		}		 
 	}
 	
 	public long countEntries() {
@@ -43,5 +50,20 @@ public class EmployeePayrollFileIOService {
 			System.out.println(e.getMessage());
 		}
 		return entries;
+	}
+	
+	public List<EmployeePayrollData> readFile() throws IOException{
+		List<EmployeePayrollData> employeePayrollDataArrayList = new ArrayList<>();
+		try {
+			Files.lines(Paths.get(pAYROLL_FILE_NAME)).forEach(line->{
+				line=line.trim();
+				String[] arr = line.split(" ");
+				employeePayrollDataArrayList.add(new EmployeePayrollData(Integer.parseInt(arr[0]), arr[1], Integer.parseInt(arr[2])));
+			});
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return employeePayrollDataArrayList;
 	}
 }
