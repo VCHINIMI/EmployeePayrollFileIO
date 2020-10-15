@@ -1,5 +1,6 @@
 package myPackage.vinay.fileIO;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,5 +23,25 @@ public class EmployeePayrollFileIOService {
 		catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	public void printData() {
+		try {
+			Files.lines(new File(pAYROLL_FILE_NAME).toPath()).forEach(System.out::println);
+		}
+		catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public long countEntries() {
+		long entries = 0;
+		try {
+			entries = Files.lines(new File(pAYROLL_FILE_NAME).toPath()).count();
+		}
+		catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		return entries;
 	}
 }
